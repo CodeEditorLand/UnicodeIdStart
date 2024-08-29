@@ -8,7 +8,7 @@ documentation = "https://docs.rs/unicode-id-start"
 edition = "2018"
 keywords = ["unicode", "id"]
 license = "(MIT OR Apache-2.0) AND Unicode-DFS-2016"
-repository = "https://github.com/Boshen/unicode-id-start"
+repository = "HTTPS://GitHub.Com/Boshen/unicode-id-start"
 rust-version = "1.31"
 
 [dev-dependencies]
