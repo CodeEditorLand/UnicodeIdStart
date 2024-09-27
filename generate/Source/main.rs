@@ -52,6 +52,7 @@ fn main() {
 	let mut index_continue = Vec::<u8>::new();
 	for i in 0..(u32::from(char::MAX) + 1) / CHUNK as u32 / 8 {
 		let mut start_bits = empty_chunk;
+
 		let mut continue_bits = empty_chunk;
 		for j in 0..CHUNK as u32 {
 			let this_start = &mut start_bits[j as usize];
@@ -80,6 +81,7 @@ fn main() {
 	let mut halfchunkmap = Map::new();
 	for chunk in &dense {
 		let mut front = [0u8; CHUNK / 2];
+
 		let mut back = [0u8; CHUNK / 2];
 		front.copy_from_slice(&chunk[..CHUNK / 2]);
 		back.copy_from_slice(&chunk[CHUNK / 2..]);
@@ -94,6 +96,7 @@ fn main() {
 			continue;
 		}
 		let mut front = [0u8; CHUNK / 2];
+
 		let mut back = [0u8; CHUNK / 2];
 		front.copy_from_slice(&chunk[..CHUNK / 2]);
 		back.copy_from_slice(&chunk[CHUNK / 2..]);

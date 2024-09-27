@@ -81,6 +81,7 @@ fn bench(c: &mut Criterion, group_name: &str, string: String) {
 	});
 	group.bench_function("fst", |b| {
 		let id_start_fst = fst::id_start_fst();
+
 		let id_continue_fst = fst::id_continue_fst();
 		b.iter(|| {
 			for ch in string.chars() {
@@ -92,6 +93,7 @@ fn bench(c: &mut Criterion, group_name: &str, string: String) {
 	});
 	group.bench_function("roaring", |b| {
 		let id_start_bitmap = roaring::id_start_bitmap();
+
 		let id_continue_bitmap = roaring::id_continue_bitmap();
 		b.iter(|| {
 			for ch in string.chars() {

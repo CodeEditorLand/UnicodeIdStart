@@ -27,6 +27,7 @@ pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
 	let contents = fs::read_to_string(path).unwrap_or_else(|err| {
 		let suggestion =
 			"Download from https://www.unicode.org/Public/zipped/l5.0.0/UCD.zip and unzip.";
+
 		let _ = writeln!(io::stderr(), "{}: {err}\n{suggestion}", ucd_dir.display());
 		process::exit(1);
 	});
@@ -39,6 +40,7 @@ pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
 			let _ = writeln!(io::stderr(), "{filename} line {i} is unexpected:\n{line}");
 			process::exit(1);
 		});
+
 		let set = match name {
 			"ID_Start" => &mut properties.id_start,
 			"ID_Continue" => &mut properties.id_continue,
