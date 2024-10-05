@@ -38,7 +38,8 @@ fn gen_string(p_nonascii: u32) -> String {
 
 	let mut string = String::new();
 	for _ in 0..500_000 {
-		let distribution = if pick_nonascii.sample(&mut rng) { nonascii } else { ascii };
+		let distribution =
+			if pick_nonascii.sample(&mut rng) { nonascii } else { ascii };
 		string.push(distribution.sample(&mut rng));
 	}
 

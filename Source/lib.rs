@@ -251,7 +251,9 @@
 #[rustfmt::skip]
 mod tables;
 
-use crate::tables::{ASCII_CONTINUE, ASCII_START, CHUNK, LEAF, TRIE_CONTINUE, TRIE_START};
+use crate::tables::{
+	ASCII_CONTINUE, ASCII_START, CHUNK, LEAF, TRIE_CONTINUE, TRIE_START,
+};
 
 /// Check ascii and unicode for id_start
 #[inline]

@@ -1,9 +1,9 @@
-> [!IMPORTANT]
-> This crate is a better optimized implementation of the older `unicode-id` crate.
-> This crate uses less static storage, and is able to classify both ASCII and non-ASCII codepoints with better performance, 2&ndash;10&times; faster than `unicode-id`.
+> [!IMPORTANT] This crate is a better optimized implementation of the older
+> `unicode-id` crate. This crate uses less static storage, and is able to
+> classify both ASCII and non-ASCII codepoints with better performance,
+> 2&ndash;10&times; faster than `unicode-id`.
 
-Unicode ID_start
-=============
+# Unicode ID_start
 
 [<img alt="github" src="https://img.shields.io/badge/github-dtolnay/unicode--ident-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/dtolnay/unicode-ident)
 [<img alt="crates.io" src="https://img.shields.io/crates/v/unicode-ident.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/unicode-ident)
@@ -19,30 +19,31 @@ Implementation of [Unicode Standard Annex #31][tr31] for determining which
 
 ### 1.3.0
 
-- Unicode 16.0.0
+-   Unicode 16.0.0
 
 ### 1.2.0
 
-- patch `・` U+30FB KATAKANA MIDDLE DOT and `･` U+FF65 HALFWIDTH KATAKANA MIDDLE DOT
+-   patch `・` U+30FB KATAKANA MIDDLE DOT and `･` U+FF65 HALFWIDTH KATAKANA
+    MIDDLE DOT
 
-Unicode 4.1 through Unicode 15 omitted these two characters from ID_Continue by accident.
-However, this accident was corrected in Unicode 15.1.
-Any JS VM that supports ES6+ but that uses a version of Unicode earlier than 15.1 will consider these to be a syntax error,
-so we deliberately omit these characters from the set of identifiers that are valid in both ES5 and ES6+.
-For more info see 2.2 in https://www.unicode.org/L2/L2023/23160-utc176-properties-recs.pdf
+Unicode 4.1 through Unicode 15 omitted these two characters from ID_Continue by
+accident. However, this accident was corrected in Unicode 15.1. Any JS VM that
+supports ES6+ but that uses a version of Unicode earlier than 15.1 will consider
+these to be a syntax error, so we deliberately omit these characters from the
+set of identifiers that are valid in both ES5 and ES6+. For more info see 2.2 in
+https://www.unicode.org/L2/L2023/23160-utc176-properties-recs.pdf
 
 ### 1.1.2
 
-- Unicode 15.1.0
+-   Unicode 15.1.0
 
 ### 1.1.1
 
-- Unicode 15.0.0
+-   Unicode 15.0.0
 
 ### 1.0.4
 
-- Unicode 14.0.0
-
+-   Unicode 14.0.0
 
 <br>
 
@@ -51,16 +52,18 @@ For more info see 2.2 in https://www.unicode.org/L2/L2023/23160-utc176-propertie
 The following table shows a comparison between five Unicode identifier
 implementations.
 
-- `unicode-id-start` is this crate, which is a fork of [`unicode-ident`];
-- [`unicode-xid`] is a widely used crate run by the "unicode-rs" org, [`unicode-id`] is a fork of [`unicode-xid`];
-- `ucd-trie` and `fst` are two data structures supported by the [`ucd-generate`] tool;
-- [`roaring`] is a Rust implementation of Roaring bitmap.
+-   `unicode-id-start` is this crate, which is a fork of [`unicode-ident`];
+-   [`unicode-xid`] is a widely used crate run by the "unicode-rs" org,
+    [`unicode-id`] is a fork of [`unicode-xid`];
+-   `ucd-trie` and `fst` are two data structures supported by the
+    [`ucd-generate`] tool;
+-   [`roaring`] is a Rust implementation of Roaring bitmap.
 
-The *static storage* column shows the total size of `static` tables that the
+The _static storage_ column shows the total size of `static` tables that the
 crate bakes into your binary, measured in 1000s of bytes.
 
 The remaining columns show the **cost per call** to evaluate whether a single
-`char` has the ID\_Start or ID\_Continue Unicode property, comparing across
+`char` has the ID_Start or ID_Continue Unicode property, comparing across
 different ratios of ASCII to non-ASCII codepoints in the input data.
 
 [`unicode-ident`]: https://github.com/dtolnay/unicode-ident
@@ -69,15 +72,15 @@ different ratios of ASCII to non-ASCII codepoints in the input data.
 [`ucd-generate`]: https://github.com/BurntSushi/ucd-generate
 [`roaring`]: https://github.com/RoaringBitmap/roaring-rs
 
-| | static storage | 0% nonascii | 1% | 10% | 100% nonascii |
-|---|---|---|---|---|---|
-| **`unicode-ident`** | 10.0 K | 0.96 ns | 0.95 ns | 1.09 ns | 1.55 ns |
-| **`unicode-xid`** | 11.5 K | 1.88 ns | 2.14 ns | 3.48 ns | 15.63 ns |
-| **`ucd-trie`** | 10.2 K | 1.29 ns | 1.28 ns | 1.36 ns | 2.15 ns |
-| **`fst`** | 138 K | 55.1 ns | 54.9 ns | 53.2 ns | 28.5 ns |
-| **`roaring`** | 66.1 K | 2.78 ns | 3.09 ns | 3.37 ns | 4.70 ns |
+|                     | static storage | 0% nonascii | 1%      | 10%     | 100% nonascii |
+| ------------------- | -------------- | ----------- | ------- | ------- | ------------- |
+| **`unicode-ident`** | 10.0 K         | 0.96 ns     | 0.95 ns | 1.09 ns | 1.55 ns       |
+| **`unicode-xid`**   | 11.5 K         | 1.88 ns     | 2.14 ns | 3.48 ns | 15.63 ns      |
+| **`ucd-trie`**      | 10.2 K         | 1.29 ns     | 1.28 ns | 1.36 ns | 2.15 ns       |
+| **`fst`**           | 138 K          | 55.1 ns     | 54.9 ns | 53.2 ns | 28.5 ns       |
+| **`roaring`**       | 66.1 K         | 2.78 ns     | 3.09 ns | 3.37 ns | 4.70 ns       |
 
-Source code for the benchmark is provided in the *bench* directory of this repo
+Source code for the benchmark is provided in the _bench_ directory of this repo
 and may be repeated by running `cargo criterion`.
 
 <br>
@@ -190,8 +193,8 @@ possibly be used.
 
 #### roaring
 
-This crate is a pure-Rust implementation of [Roaring Bitmap], a data structure
-designed for storing sets of 32-bit unsigned integers.
+This crate is a pure-Rust implementation of [Roaring Bitmap], a data structure designed
+for storing sets of 32-bit unsigned integers.
 
 [Roaring Bitmap]: https://roaringbitmap.org/about/
 
@@ -219,14 +222,13 @@ compression and suffix compression.
 
 The key differences are:
 
-- Uses a single 2-level trie, rather than 3 disjoint partitions of different
-  depth each.
-- Uses significantly larger chunks: 512 bits rather than 64 bits.
-- Compresses the ID\_Start and ID\_Continue properties together
-  simultaneously, rather than duplicating identical trie leaf chunks across the
-  two.
+-   Uses a single 2-level trie, rather than 3 disjoint partitions of different
+    depth each.
+-   Uses significantly larger chunks: 512 bits rather than 64 bits.
+-   Compresses the ID_Start and ID_Continue properties together simultaneously,
+    rather than duplicating identical trie leaf chunks across the two.
 
-The following diagram show the ID\_Start and ID\_Continue Unicode boolean
+The following diagram show the ID_Start and ID_Continue Unicode boolean
 properties in uncompressed form, in row-major order:
 
 <table>

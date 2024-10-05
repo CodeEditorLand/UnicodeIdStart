@@ -1,5 +1,5 @@
-
-To regenerate tables, run the following in the repo root (replace the unicode version):
+To regenerate tables, run the following in the repo root (replace the unicode
+version):
 
 ```bash
 cargo binstall ucd-generate

@@ -20,7 +20,8 @@ impl Properties {
 }
 
 pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
-	let mut properties = Properties { id_start: Set::new(), id_continue: Set::new() };
+	let mut properties =
+		Properties { id_start: Set::new(), id_continue: Set::new() };
 
 	let filename = "DerivedCoreProperties.txt";
 	let path = ucd_dir.join(filename);
@@ -37,7 +38,10 @@ pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
 			continue;
 		}
 		let (lo, hi, name) = parse_line(line).unwrap_or_else(|| {
-			let _ = writeln!(io::stderr(), "{filename} line {i} is unexpected:\n{line}");
+			let _ = writeln!(
+				io::stderr(),
+				"{filename} line {i} is unexpected:\n{line}"
+			);
 			process::exit(1);
 		});
 
