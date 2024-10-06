@@ -24,13 +24,16 @@ mod roaring;
 #[path = "../tests/trie/mod.rs"]
 mod trie;
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use rand::distributions::{Bernoulli, Distribution, Uniform};
-use rand::rngs::SmallRng;
-use rand::SeedableRng;
 use std::time::Duration;
 
-fn gen_string(p_nonascii: u32) -> String {
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use rand::{
+	distributions::{Bernoulli, Distribution, Uniform},
+	rngs::SmallRng,
+	SeedableRng,
+};
+
+fn gen_string(p_nonascii:u32) -> String {
 	let mut rng = SmallRng::from_seed([b'!'; 32]);
 	let pick_nonascii = Bernoulli::from_ratio(p_nonascii, 100).unwrap();
 	let ascii = Uniform::new_inclusive('\0', '\x7f');
@@ -46,7 +49,7 @@ fn gen_string(p_nonascii: u32) -> String {
 	string
 }
 
-fn bench(c: &mut Criterion, group_name: &str, string: String) {
+fn bench(c:&mut Criterion, group_name:&str, string:String) {
 	let mut group = c.benchmark_group(group_name);
 	group.measurement_time(Duration::from_secs(10));
 	group.bench_function("baseline", |b| {
@@ -106,21 +109,13 @@ fn bench(c: &mut Criterion, group_name: &str, string: String) {
 	group.finish();
 }
 
-fn bench0(c: &mut Criterion) {
-	bench(c, "0%-nonascii", gen_string(0));
-}
+fn bench0(c:&mut Criterion) { bench(c, "0%-nonascii", gen_string(0)); }
 
-fn bench1(c: &mut Criterion) {
-	bench(c, "1%-nonascii", gen_string(1));
-}
+fn bench1(c:&mut Criterion) { bench(c, "1%-nonascii", gen_string(1)); }
 
-fn bench10(c: &mut Criterion) {
-	bench(c, "10%-nonascii", gen_string(10));
-}
+fn bench10(c:&mut Criterion) { bench(c, "10%-nonascii", gen_string(10)); }
 
-fn bench100(c: &mut Criterion) {
-	bench(c, "100%-nonascii", gen_string(100));
-}
+fn bench100(c:&mut Criterion) { bench(c, "100%-nonascii", gen_string(100)); }
 
 criterion_group!(benches, bench0, bench1, bench10, bench100);
 criterion_main!(benches);

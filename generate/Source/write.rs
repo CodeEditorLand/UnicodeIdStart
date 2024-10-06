@@ -1,8 +1,6 @@
-use crate::output::Output;
-use crate::parse::Properties;
-use crate::CHUNK;
+use crate::{output::Output, parse::Properties, CHUNK};
 
-const HEAD: &str = "\
+const HEAD:&str = "\
 const T: bool = true;
 const F: bool = false;
 
@@ -13,18 +11,15 @@ pub(crate) struct Align64<T>(pub(crate) T);
 ";
 
 pub fn output(
-	properties: &Properties,
-	index_start: &[u8],
-	index_continue: &[u8],
-	halfdense: &[u8],
+	properties:&Properties,
+	index_start:&[u8],
+	index_continue:&[u8],
+	halfdense:&[u8],
 ) -> Output {
 	let mut out = Output::new();
 	writeln!(out, "{}", HEAD);
 
-	writeln!(
-		out,
-		"pub(crate) static ASCII_START: Align64<[bool; 128]> = Align64([",
-	);
+	writeln!(out, "pub(crate) static ASCII_START: Align64<[bool; 128]> = Align64([",);
 	for i in 0u8..4 {
 		write!(out, "   ");
 		for j in 0..32 {
@@ -37,10 +32,7 @@ pub fn output(
 	writeln!(out, "]);");
 	writeln!(out);
 
-	writeln!(
-		out,
-		"pub(crate) static ASCII_CONTINUE: Align64<[bool; 128]> = Align64([",
-	);
+	writeln!(out, "pub(crate) static ASCII_CONTINUE: Align64<[bool; 128]> = Align64([",);
 	for i in 0u8..4 {
 		write!(out, "   ");
 		for j in 0..32 {
@@ -86,11 +78,7 @@ pub fn output(
 	writeln!(out, "]);");
 	writeln!(out);
 
-	writeln!(
-		out,
-		"pub(crate) static LEAF: Align64<[u8; {}]> = Align64([",
-		halfdense.len(),
-	);
+	writeln!(out, "pub(crate) static LEAF: Align64<[u8; {}]> = Align64([", halfdense.len(),);
 	for line in halfdense.chunks(16) {
 		write!(out, "   ");
 		for byte in line {

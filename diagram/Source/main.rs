@@ -1,12 +1,13 @@
 #![allow(clippy::type_complexity, clippy::uninlined_format_args)]
 
-use image::{ImageBuffer, Rgb};
 use std::process;
+
+use image::{ImageBuffer, Rgb};
 
 fn main() {
 	let width = 512;
 	let height = 400;
-	let diagrams: [(&str, fn(char) -> bool); 2] = [
+	let diagrams:[(&str, fn(char) -> bool); 2] = [
 		("id_start.png", unicode_id_start::is_id_start),
 		("id_continue.png", unicode_id_start::is_id_continue),
 	];

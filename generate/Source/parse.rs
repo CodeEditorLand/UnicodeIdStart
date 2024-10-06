@@ -1,27 +1,24 @@
-use std::collections::BTreeSet as Set;
-use std::fs;
-use std::io::{self, Write};
-use std::path::Path;
-use std::process;
+use std::{
+	collections::BTreeSet as Set,
+	fs,
+	io::{self, Write},
+	path::Path,
+	process,
+};
 
 pub struct Properties {
-	id_start: Set<u32>,
-	id_continue: Set<u32>,
+	id_start:Set<u32>,
+	id_continue:Set<u32>,
 }
 
 impl Properties {
-	pub fn is_id_start(&self, ch: char) -> bool {
-		self.id_start.contains(&(ch as u32))
-	}
+	pub fn is_id_start(&self, ch:char) -> bool { self.id_start.contains(&(ch as u32)) }
 
-	pub fn is_id_continue(&self, ch: char) -> bool {
-		self.id_continue.contains(&(ch as u32))
-	}
+	pub fn is_id_continue(&self, ch:char) -> bool { self.id_continue.contains(&(ch as u32)) }
 }
 
-pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
-	let mut properties =
-		Properties { id_start: Set::new(), id_continue: Set::new() };
+pub fn parse_id_properties(ucd_dir:&Path) -> Properties {
+	let mut properties = Properties { id_start:Set::new(), id_continue:Set::new() };
 
 	let filename = "DerivedCoreProperties.txt";
 	let path = ucd_dir.join(filename);
@@ -38,10 +35,7 @@ pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
 			continue;
 		}
 		let (lo, hi, name) = parse_line(line).unwrap_or_else(|| {
-			let _ = writeln!(
-				io::stderr(),
-				"{filename} line {i} is unexpected:\n{line}"
-			);
+			let _ = writeln!(io::stderr(), "{filename} line {i} is unexpected:\n{line}");
 			process::exit(1);
 		});
 
@@ -54,19 +48,19 @@ pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
 	}
 
 	// <https://github.com/evanw/esbuild/pull/3424>
-	// Unicode 4.1 through Unicode 15 omitted these two characters from ID_Continue
-	// by accident. However, this accident was corrected in Unicode 15.1. Any JS VM
-	// that supports ES6+ but that uses a version of Unicode earlier than 15.1 will
-	// consider these to be a syntax error, so we deliberately omit these characters
-	// from the set of identifiers that are valid in both ES5 and ES6+. For more info
-	// see 2.2 in https://www.unicode.org/L2/L2023/23160-utc176-properties-recs.pdf
+	// Unicode 4.1 through Unicode 15 omitted these two characters from
+	// ID_Continue by accident. However, this accident was corrected in Unicode
+	// 15.1. Any JS VM that supports ES6+ but that uses a version of Unicode
+	// earlier than 15.1 will consider these to be a syntax error, so we
+	// deliberately omit these characters from the set of identifiers that are
+	// valid in both ES5 and ES6+. For more info see 2.2 in https://www.unicode.org/L2/L2023/23160-utc176-properties-recs.pdf
 	properties.id_continue.remove(&0x30FB);
 	properties.id_continue.remove(&0xFF65);
 
 	properties
 }
 
-fn parse_line(line: &str) -> Option<(u32, u32, &str)> {
+fn parse_line(line:&str) -> Option<(u32, u32, &str)> {
 	let (mut codepoint, rest) = line.split_once(';')?;
 
 	let (lo, hi);
@@ -83,6 +77,4 @@ fn parse_line(line: &str) -> Option<(u32, u32, &str)> {
 	Some((lo, hi, name))
 }
 
-fn parse_codepoint(s: &str) -> Option<u32> {
-	u32::from_str_radix(s, 16).ok()
-}
+fn parse_codepoint(s:&str) -> Option<u32> { u32::from_str_radix(s, 16).ok() }

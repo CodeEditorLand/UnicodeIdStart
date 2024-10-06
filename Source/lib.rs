@@ -24,7 +24,8 @@
 //! implementations.
 //!
 //! - `unicode-id-start` is this crate, which is a fork of `unicode-ident`;
-//! - [`unicode-xid`] is a widely used crate run by the "unicode-rs" org; [`unicode-id`] is a fork of `unicode-xid`;
+//! - [`unicode-xid`] is a widely used crate run by the "unicode-rs" org;
+//!   [`unicode-id`] is a fork of `unicode-xid`;
 //! - `ucd-trie` and `fst` are two data structures supported by the
 //!   [`ucd-generate`] tool;
 //! - [`roaring`] is a Rust implementation of Roaring bitmap.
@@ -116,12 +117,12 @@
 //!
 //! ```rust
 //! pub struct TrieSet {
-//!     tree1_level1: &'static [u64; 32],
-//!     tree2_level1: &'static [u8; 992],
-//!     tree2_level2: &'static [u64],
-//!     tree3_level1: &'static [u8; 256],
-//!     tree3_level2: &'static [u8],
-//!     tree3_level3: &'static [u64],
+//! 	tree1_level1:&'static [u64; 32],
+//! 	tree2_level1:&'static [u8; 992],
+//! 	tree2_level2:&'static [u64],
+//! 	tree3_level1:&'static [u8; 256],
+//! 	tree3_level2:&'static [u8],
+//! 	tree3_level3:&'static [u64],
 //! }
 //! ```
 //!
@@ -251,13 +252,11 @@
 #[rustfmt::skip]
 mod tables;
 
-use crate::tables::{
-	ASCII_CONTINUE, ASCII_START, CHUNK, LEAF, TRIE_CONTINUE, TRIE_START,
-};
+use crate::tables::{ASCII_CONTINUE, ASCII_START, CHUNK, LEAF, TRIE_CONTINUE, TRIE_START};
 
 /// Check ascii and unicode for id_start
 #[inline]
-pub fn is_id_start(ch: char) -> bool {
+pub fn is_id_start(ch:char) -> bool {
 	if ch.is_ascii() {
 		return ASCII_START.0[ch as usize];
 	}
@@ -266,7 +265,7 @@ pub fn is_id_start(ch: char) -> bool {
 
 /// Check unicode only for id_start
 #[inline]
-pub fn is_id_start_unicode(ch: char) -> bool {
+pub fn is_id_start_unicode(ch:char) -> bool {
 	let chunk = *TRIE_START.0.get(ch as usize / 8 / CHUNK).unwrap_or(&0);
 	let offset = chunk as usize * CHUNK / 2 + ch as usize / 8 % CHUNK;
 	unsafe { LEAF.0.get_unchecked(offset) }.wrapping_shr(ch as u32 % 8) & 1 != 0
@@ -274,7 +273,7 @@ pub fn is_id_start_unicode(ch: char) -> bool {
 
 /// Check ascii and unicode for id_continue
 #[inline]
-pub fn is_id_continue(ch: char) -> bool {
+pub fn is_id_continue(ch:char) -> bool {
 	if ch.is_ascii() {
 		return ASCII_CONTINUE.0[ch as usize];
 	}
@@ -283,7 +282,7 @@ pub fn is_id_continue(ch: char) -> bool {
 
 /// Check and unicode only for id_continue
 #[inline]
-pub fn is_id_continue_unicode(ch: char) -> bool {
+pub fn is_id_continue_unicode(ch:char) -> bool {
 	let chunk = *TRIE_CONTINUE.0.get(ch as usize / 8 / CHUNK).unwrap_or(&0);
 	let offset = chunk as usize * CHUNK / 2 + ch as usize / 8 % CHUNK;
 	unsafe { LEAF.0.get_unchecked(offset) }.wrapping_shr(ch as u32 % 8) & 1 != 0

@@ -12,17 +12,20 @@ mod output;
 mod parse;
 mod write;
 
-use crate::parse::parse_id_properties;
-use std::collections::{BTreeMap as Map, VecDeque};
-use std::convert::TryFrom;
-use std::fs;
-use std::io::{self, Write};
-use std::path::Path;
-use std::process;
+use std::{
+	collections::{BTreeMap as Map, VecDeque},
+	convert::TryFrom,
+	fs,
+	io::{self, Write},
+	path::Path,
+	process,
+};
 
-const CHUNK: usize = 64;
-const UCD: &str = "UCD";
-const TABLES: &str = "src/tables.rs";
+use crate::parse::parse_id_properties;
+
+const CHUNK:usize = 64;
+const UCD:&str = "UCD";
+const TABLES:&str = "src/tables.rs";
 
 fn main() {
 	let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
@@ -62,8 +65,7 @@ fn main() {
 				if code >= 0x80 {
 					if let Some(ch) = char::from_u32(code) {
 						*this_start |= (properties.is_id_start(ch) as u8) << k;
-						*this_continue |=
-							(properties.is_id_continue(ch) as u8) << k;
+						*this_continue |= (properties.is_id_continue(ch) as u8) << k;
 					}
 				}
 			}
@@ -110,9 +112,7 @@ fn main() {
 		);
 		halfdense.extend_from_slice(&front);
 		halfdense.extend_from_slice(&back);
-		while let Some(next) =
-			halfchunkmap.get_mut(&back).and_then(VecDeque::pop_front)
-		{
+		while let Some(next) = halfchunkmap.get_mut(&back).and_then(VecDeque::pop_front) {
 			let mut concat = empty_chunk;
 			concat[..CHUNK / 2].copy_from_slice(&back);
 			concat[CHUNK / 2..].copy_from_slice(&next);
@@ -139,8 +139,7 @@ fn main() {
 		*index = dense_to_halfdense[index];
 	}
 
-	let out =
-		write::output(&properties, &index_start, &index_continue, &halfdense);
+	let out = write::output(&properties, &index_start, &index_continue, &halfdense);
 	let path = unicode_ident_dir.join(TABLES);
 	if let Err(err) = fs::write(&path, out) {
 		let _ = writeln!(io::stderr(), "{}: {err}", path.display());
