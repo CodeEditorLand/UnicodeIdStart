@@ -260,6 +260,7 @@ pub fn is_id_start(ch:char) -> bool {
 	if ch.is_ascii() {
 		return ASCII_START.0[ch as usize];
 	}
+
 	is_id_start_unicode(ch)
 }
 
@@ -267,7 +268,9 @@ pub fn is_id_start(ch:char) -> bool {
 #[inline]
 pub fn is_id_start_unicode(ch:char) -> bool {
 	let chunk = *TRIE_START.0.get(ch as usize / 8 / CHUNK).unwrap_or(&0);
+
 	let offset = chunk as usize * CHUNK / 2 + ch as usize / 8 % CHUNK;
+
 	unsafe { LEAF.0.get_unchecked(offset) }.wrapping_shr(ch as u32 % 8) & 1 != 0
 }
 
@@ -277,6 +280,7 @@ pub fn is_id_continue(ch:char) -> bool {
 	if ch.is_ascii() {
 		return ASCII_CONTINUE.0[ch as usize];
 	}
+
 	is_id_continue_unicode(ch)
 }
 
@@ -284,6 +288,8 @@ pub fn is_id_continue(ch:char) -> bool {
 #[inline]
 pub fn is_id_continue_unicode(ch:char) -> bool {
 	let chunk = *TRIE_CONTINUE.0.get(ch as usize / 8 / CHUNK).unwrap_or(&0);
+
 	let offset = chunk as usize * CHUNK / 2 + ch as usize / 8 % CHUNK;
+
 	unsafe { LEAF.0.get_unchecked(offset) }.wrapping_shr(ch as u32 % 8) & 1 != 0
 }

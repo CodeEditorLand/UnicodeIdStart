@@ -26,11 +26,15 @@ pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
     };
 
     let filename = "DerivedCoreProperties.txt";
+
     let path = ucd_dir.join(filename);
+
     let contents = fs::read_to_string(path).unwrap_or_else(|err| {
         let suggestion =
             "Download from https://www.unicode.org/Public/zipped/l5.0.0/UCD.zip and unzip.";
+
         let _ = writeln!(io::stderr(), "{}: {err}\n{suggestion}", ucd_dir.display());
+
         process::exit(1);
     });
 
@@ -38,15 +42,19 @@ pub fn parse_id_properties(ucd_dir: &Path) -> Properties {
         if line.starts_with('#') || line.trim().is_empty() {
             continue;
         }
+
         let (lo, hi, name) = parse_line(line).unwrap_or_else(|| {
             let _ = writeln!(io::stderr(), "{filename} line {i} is unexpected:\n{line}");
+
             process::exit(1);
         });
+
         let set = match name {
             "ID_Start" => &mut properties.id_start,
             "ID_Continue" => &mut properties.id_continue,
             _ => continue,
         };
+
         set.extend(lo..=hi);
     }
 
@@ -57,16 +65,21 @@ fn parse_line(line: &str) -> Option<(u32, u32, &str)> {
     let (mut codepoint, rest) = line.split_once(';')?;
 
     let (lo, hi);
+
     codepoint = codepoint.trim();
+
     if let Some((a, b)) = codepoint.split_once("..") {
         lo = parse_codepoint(a)?;
+
         hi = parse_codepoint(b)?;
     } else {
         lo = parse_codepoint(codepoint)?;
+
         hi = lo;
     }
 
     let name = rest.trim().split('#').next()?.trim_end();
+
     Some((lo, hi, name))
 }
 
