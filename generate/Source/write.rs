@@ -1,4 +1,4 @@
-use crate::{output::Output, parse::Properties, CHUNK};
+use crate::{CHUNK, output::Output, parse::Properties};
 
 const HEAD:&str = "\
 const T: bool = true;
