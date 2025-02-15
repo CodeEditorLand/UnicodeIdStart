@@ -1,6 +1,10 @@
+[[bin]]
+name = "unicode-ident-diagram"
+path = "Source/main.rs"
+
 [package]
-name = "unicode-ident-generate"
-version = "0.0.0"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 edition = "2018"
+name = "unicode-ident-generate"
 publish = false
+version = "0.0.0"

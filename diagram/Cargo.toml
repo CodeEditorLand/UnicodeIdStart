@@ -1,10 +1,14 @@
-[package]
+[[bin]]
 name = "unicode-ident-diagram"
-version = "0.0.0"
-authors = ["David Tolnay <dtolnay@gmail.com>"]
-edition = "2018"
-publish = false
+path = "Source/main.rs"
 
 [dependencies]
 image = "0.25.0"
 unicode-id-start = { path = ".." }
+
+[package]
+authors = ["David Tolnay <dtolnay@gmail.com>"]
+edition = "2018"
+name = "unicode-ident-diagram"
+publish = false
+version = "0.0.0"
