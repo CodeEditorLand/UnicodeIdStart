@@ -5,7 +5,7 @@ name = "id"
 [dev-dependencies]
 criterion = { version = "0.5", default-features = false }
 fst = "0.4"
-rand = { version = "0.8", features = ["small_rng"] }
+rand = { version = "0.9", features = ["small_rng"] }
 roaring = "0.10"
 ucd-trie = { version = "0.1", default-features = false }
 unicode-id = "0.3.5"
@@ -20,7 +20,7 @@ keywords = ["unicode", "id"]
 license-file = "LICENSE"
 name = "unicode-id-start"
 repository = "https://github.com/Boshen/unicode-id-start"
-rust-version = "1.31"
+rust-version = "1.85.0"
 version = "1.3.1"
 
 [package.metadata]

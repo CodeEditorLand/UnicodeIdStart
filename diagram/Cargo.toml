@@ -3,7 +3,7 @@ name = "unicode-ident-diagram"
 path = "Source/main.rs"
 
 [dependencies]
-image = "0.25.0"
+image = "0.25.5"
 unicode-id-start = { path = ".." }
 
 [package]
